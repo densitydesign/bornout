@@ -1,0 +1,16 @@
+extends ../layouts/default
+
+block main
+  h1= title
+
+block content
+  - if (sections.length)
+    - each section in sections
+      .section
+        h3
+          a(href='/sections/'+section._id, title=section.title) #{section.title}
+        p= section.body
+
+  - else
+    p.muted No sections.&nbsp;
+      a(href="/sections/new") create one

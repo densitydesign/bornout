@@ -1,0 +1,16 @@
+extends ../layouts/default
+
+block main
+  h3= title
+
+block content
+  - if (visualizations.length)
+    - each visualization in visualizations
+      .visualization
+        h5
+          a(href='/visualizations/'+visualization.slug, title=visualization.title) #{visualization.title}
+        p= visualization.body
+
+  - else
+    p.muted No visualizations.&nbsp;
+      a(href="/visualizations/new") create one

@@ -1,0 +1,55 @@
+extends ../layouts/default
+
+block main
+  h3= title
+  hr
+
+block content
+  - var action = '/visualizations'
+  - action += visualization.isNew? '' : '/' + visualization.slug
+
+  .row
+    .span7
+      form(method="post", action=action, enctype="multipart/form-data")
+
+        input(type="hidden", name="_csrf", value="#{csrf_token}")
+        input(id="__content" type="hidden", name="__content", value="#{visualization.content}")
+        //input(id="__is-new" type="hidden", name="__isNew", value="#{visualization.isNew}")
+
+        - if (!visualization.isNew)
+          input(type="hidden", name="_method", value="PUT")
+
+        label(for='title') Title
+        .controls
+          input#title.input-xlarge(type='text', name="title", value=visualization.title, placeholder='Enter the title')
+
+        label(for='description') Description
+        .controls
+          textarea#description(name="description", placeholder='Enter the Description') #{visualization.description}
+
+        label(for='content') Content
+        .controls
+          textarea#content-area(name="content", value=visualization.content) #{visualization.content}
+
+        button.btn.btn-primary(type='submit') Save changes
+        &nbsp;
+        a.btn(href='/visualizations', title="cancel") Cancel
+
+
+
+  script.
+    window.addEventListener('load', function(){
+      var content = $("#__content").val();
+      var contentArea = document.getElementById('content-area');
+      var editor = CodeMirror.fromTextArea(contentArea, {
+        mode: "text/html",
+      });
+
+      editor.on("change", function (cm, obj) { contentArea.value = cm.getValue(); } )
+
+
+
+      //var isNew = $("#is-new").val();
+      //if (isNew) return;
+      //editor.setValue("content")
+    })

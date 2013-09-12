@@ -9,7 +9,8 @@ var async = require('async')
  */
 
 var users = require('../app/controllers/users')
-  , articles = require('../app/controllers/articles')
+//  , sections = require('../app/controllers/sections')
+  , visualizations = require('../app/controllers/visualizations')
   , auth = require('./middlewares/authorization')
 
 /**
@@ -35,78 +36,31 @@ module.exports = function (app, passport) {
       failureFlash: 'Invalid email or password.'
     }), users.session)
   app.get('/users/:userId', users.show)
-  app.get('/auth/facebook',
-    passport.authenticate('facebook', {
-      scope: [ 'email', 'user_about_me'],
-      failureRedirect: '/login'
-    }), users.signin)
-  app.get('/auth/facebook/callback',
-    passport.authenticate('facebook', {
-      failureRedirect: '/login'
-    }), users.authCallback)
-  app.get('/auth/github',
-    passport.authenticate('github', {
-      failureRedirect: '/login'
-    }), users.signin)
-  app.get('/auth/github/callback',
-    passport.authenticate('github', {
-      failureRedirect: '/login'
-    }), users.authCallback)
-  app.get('/auth/twitter',
-    passport.authenticate('twitter', {
-      failureRedirect: '/login'
-    }), users.signin)
-  app.get('/auth/twitter/callback',
-    passport.authenticate('twitter', {
-      failureRedirect: '/login'
-    }), users.authCallback)
-  app.get('/auth/google',
-    passport.authenticate('google', {
-      failureRedirect: '/login',
-      scope: [
-        'https://www.googleapis.com/auth/userinfo.profile',
-        'https://www.googleapis.com/auth/userinfo.email'
-      ]
-    }), users.signin)
-  app.get('/auth/google/callback',
-    passport.authenticate('google', {
-      failureRedirect: '/login'
-    }), users.authCallback)
-  app.get('/auth/linkedin',
-    passport.authenticate('linkedin', {
-      failureRedirect: '/login',
-      scope: [ 
-        'r_emailaddress'
-      ]
-    }), users.signin)
-  app.get('/auth/linkedin/callback',
-    passport.authenticate('linkedin', {
-      failureRedirect: '/login'
-    }), users.authCallback)
-
   app.param('userId', users.user)
 
-  // article routes
-  app.get('/articles', articles.index)
-  app.get('/articles/new', auth.requiresLogin, articles.new)
-  app.post('/articles', auth.requiresLogin, articles.create)
-  app.get('/articles/:id', articles.show)
-  app.get('/articles/:id/edit', articleAuth, articles.edit)
-  app.put('/articles/:id', articleAuth, articles.update)
-  app.del('/articles/:id', articleAuth, articles.destroy)
+  /* sections routes
+  app.get('/sections', sections.index)
+  app.get('/sections/new', sections.new)
+  app.post('/sections', sections.create)
+  app.get('/sections/:id', sections.show)
+  app.get('/sections/:id/edit', sections.edit)
+  app.put('/sections/:id', sections.update)
+  app.del('/sections/:id', sections.destroy)
+  */
 
-  app.param('id', articles.load)
+  // vis routes
+
+  app.get('/visualizations', visualizations.index)
+  app.get('/visualizations/new', visualizations.new)
+  app.post('/visualizations', visualizations.create)
+  app.get('/visualizations/:slug', visualizations.show)
+  app.get('/visualizations/:slug/edit', visualizations.edit)
+  app.put('/visualizations/:slug', visualizations.update)
+  app.del('/visualizations/:slug', visualizations.destroy)
+
+  app.param('slug', visualizations.load)
 
   // home route
-  app.get('/', articles.index)
-
-  // comment routes
-  var comments = require('../app/controllers/comments')
-  app.post('/articles/:id/comments', auth.requiresLogin, comments.create)
-  app.get('/articles/:id/comments', auth.requiresLogin, comments.create)
-
-  // tag routes
-  var tags = require('../app/controllers/tags')
-  app.get('/tags/:tag', tags.index)
+  app.get('/', visualizations.index)
 
 }

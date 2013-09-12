@@ -39,12 +39,12 @@ module.exports = function (app, config, passport) {
       res.locals.pkg = pkg
       next()
     })
-
     // cookieParser should be above session
     app.use(express.cookieParser())
 
+    app.use(express.limit('30000kb'));
     // bodyParser should be above methodOverride
-    app.use(express.bodyParser())
+    app.use(express.bodyParser({maxFieldsSize:100000000}))
     app.use(express.methodOverride())
 
     // express/mongo session storage
@@ -113,4 +113,5 @@ module.exports = function (app, config, passport) {
   app.configure('development', function () {
     app.locals.pretty = true
   })
+
 }

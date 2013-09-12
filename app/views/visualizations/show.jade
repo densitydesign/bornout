@@ -1,0 +1,35 @@
+extends ../layouts/default
+
+block main
+  h3= visualization.title
+
+block content
+  .row
+    .span9
+      p= visualization.slug
+      .meta.muted
+
+      p= visualization.description
+
+      != visualization.content
+
+  p
+    br
+    form.center.form-inline.confirm(action="/visualizations/"+visualization.slug, method="post")
+      input(type='hidden', name='_csrf', value="#{csrf_token}")
+      a.btn(href='/visualizations/'+visualization.slug+'/edit', title="edit") Edit
+      &nbsp;&nbsp;
+      input(type="hidden", name="_method", value="DELETE")
+      button.btn.btn-danger(type="submit") delete
+
+
+  script.
+    window.addEventListener('load', function(){
+      d3.select("svg")
+      .call(d3.behavior.zoom().scaleExtent([1,10]).on("zoom", zoom))
+
+      function zoom() {
+        d3.select("svg").selectAll("g").attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+      }
+
+    })

@@ -1,7 +1,7 @@
 extends auth
 
 block auth
-  form.offset1.login.form-horizontal(action="/users/session", method="post")
+  form.login.form-horizontal(action="/users/session", method="post")
     input(type='hidden', name='_csrf', value="#{csrf_token}")
 
     p.offset2.error= message
