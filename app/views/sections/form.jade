@@ -2,12 +2,12 @@ extends ../layouts/default
 
 
 block main
-  h1= title
+  h3= title
   hr
 
 block content
   - var action = '/sections'
-  - action += section.isNew? '' : '/' + section.id
+  - action += section.isNew? '' : '/' + section.slug
 
   .row
     .span7

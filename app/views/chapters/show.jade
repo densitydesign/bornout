@@ -1,0 +1,28 @@
+extends ../layouts/default
+
+block main
+  h3= chapter.title
+
+block content
+  .row
+    .span9
+      p=chapter.body
+      .meta.muted
+
+      h4 Visualizations
+      - if (visualizations.length)
+        - each visualization in visualizations
+          .visualization
+            h5
+              a(href='/sections/' + section.slug + '/chapters/' + chapter.slug + '/visualizations/' + visualization.slug  , title=visualization.title) #{visualization.title}
+
+      a.btn.btn-success(href='/sections/' + section.slug + '/chapters/' + chapter.slug + '/visualizations/new', title="New visualization") Add visualization
+
+  p
+    br
+    form.center.form-inline.confirm(action='/sections/' + section.slug + '/chapters/' + chapter.slug, method="post")
+      input(type='hidden', name='_csrf', value="#{csrf_token}")
+      a.btn(href='/sections/' + section.slug + '/chapters/' + chapter.slug + '/edit', title="edit") Edit
+      &nbsp;&nbsp;
+      input(type="hidden", name="_method", value="DELETE")
+      button.btn.btn-danger(type="submit") Delete

@@ -5,7 +5,7 @@ block main
   hr
 
 block content
-  - var action = '/visualizations'
+  - var action = '/sections/' + section.slug + '/chapters/' + chapter.slug + '/visualizations'
   - action += visualization.isNew? '' : '/' + visualization.slug
 
   .row
@@ -33,7 +33,7 @@ block content
 
         button.btn.btn-primary(type='submit') Save changes
         &nbsp;
-        a.btn(href='/visualizations', title="cancel") Cancel
+        a.btn(href='/sections/' + section.slug + '/chapters/' + chapter.slug, title="cancel") Cancel
 
 
 

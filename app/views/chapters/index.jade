@@ -1,0 +1,16 @@
+extends ../layouts/default
+
+block main
+  h3= title
+
+block content
+  - if (chapters.length)
+    - each chapter in chapters
+      .chapter
+        h5
+          a(href='/chapters/'+chapter.slug, title=chapter.title) #{chapter.title}
+        p= chapter.body
+
+  - else
+    p.muted No chapters.&nbsp;
+  

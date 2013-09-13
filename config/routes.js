@@ -9,7 +9,8 @@ var async = require('async')
  */
 
 var users = require('../app/controllers/users')
-//  , sections = require('../app/controllers/sections')
+  , sections = require('../app/controllers/sections')
+  , chapters = require('../app/controllers/chapters')
   , visualizations = require('../app/controllers/visualizations')
   , auth = require('./middlewares/authorization')
 
@@ -48,19 +49,39 @@ module.exports = function (app, passport) {
   app.del('/sections/:id', sections.destroy)
   */
 
+  // section routes
+
+  app.get('/sections', sections.index)
+  app.get('/sections/new', sections.new)
+  app.post('/sections', sections.create)
+  app.get('/sections/:sectionSlug', sections.show)
+  app.get('/sections/:sectionSlug/edit', sections.edit)
+  app.put('/sections/:sectionSlug', sections.update)
+  app.del('/sections/:sectionSlug', sections.destroy)
+
+  // chapter routes
+
+  app.get('/sections/:sectionSlug/chapters/new', chapters.new)
+  app.post('/sections/:sectionSlug/chapters', chapters.create)
+  app.get('/sections/:sectionSlug/chapters/:chapterSlug', chapters.show)
+  app.get('/sections/:sectionSlug/chapters/:chapterSlug/edit', chapters.edit)
+  app.put('/sections/:sectionSlug/chapters/:chapterSlug', chapters.update)
+  app.del('/sections/:sectionSlug/chapters/:chapterSlug', chapters.destroy)
+
   // vis routes
 
-  app.get('/visualizations', visualizations.index)
-  app.get('/visualizations/new', visualizations.new)
-  app.post('/visualizations', visualizations.create)
-  app.get('/visualizations/:slug', visualizations.show)
-  app.get('/visualizations/:slug/edit', visualizations.edit)
-  app.put('/visualizations/:slug', visualizations.update)
-  app.del('/visualizations/:slug', visualizations.destroy)
+  app.get('/sections/:sectionSlug/chapters/:chapterSlug/visualizations/new', visualizations.new)
+  app.post('/sections/:sectionSlug/chapters/:chapterSlug/visualizations', visualizations.create)
+  app.get('/sections/:sectionSlug/chapters/:chapterSlug/visualizations/:slug', visualizations.show)
+  app.get('/sections/:sectionSlug/chapters/:chapterSlug/visualizations/:slug/edit', visualizations.edit)
+  app.put('/sections/:sectionSlug/chapters/:chapterSlug/visualizations/:slug', visualizations.update)
+  app.del('/sections/:sectionSlug/chapters/:chapterSlug/visualizations/:slug', visualizations.destroy)
 
+  app.param('sectionSlug', sections.load)
+  app.param('chapterSlug', chapters.load)
   app.param('slug', visualizations.load)
 
   // home route
-  app.get('/', visualizations.index)
+  app.get('/', sections.index)
 
 }

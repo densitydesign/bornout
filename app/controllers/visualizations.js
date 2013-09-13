@@ -21,14 +21,18 @@ exports.load = function(req, res, next, slug) {
 exports.new = function(req, res){
   res.render('visualizations/new', {
     title: 'New Visualization',
-    visualization: new Visualization({})
+    visualization: new Visualization({}),
+    section: req.section,
+    chapter: req.chapter
   })
 }
 
 exports.edit = function (req, res) {
   res.render('visualizations/edit', {
     title: 'Edit ' + req.visualization.title,
-    visualization: req.visualization
+    visualization: req.visualization,
+    section: req.section,
+    chapter: req.chapter
   })
 }
 
@@ -52,7 +56,9 @@ exports.index = function(req, res) {
 exports.show = function(req, res){
   res.render('visualizations/show', {
     title: req.visualization.title,
-    visualization: req.visualization
+    visualization: req.visualization,
+    section: req.section,
+    chapter: req.chapter
   })
 }
 
@@ -60,11 +66,12 @@ exports.show = function(req, res){
 
 exports.create = function (req, res) {
   var visualization = new Visualization(req.body)
+	visualization.chapter = req.chapter
 
   visualization.uploadAndSave(function (err) {
     if (!err) {
       req.flash('success', 'Successfully created section!')
-      return res.redirect('/visualizations/'+visualization.slug)
+      return res.redirect('/sections/' + req.section.slug + '/chapters/' + req.chapter.slug + '/visualizations/'+visualization.slug)
     }
 
     res.render('visualizations/new', {
@@ -80,10 +87,10 @@ exports.create = function (req, res) {
 exports.update = function(req, res){
   var visualization = req.visualization
   visualization = _.extend(visualization, req.body)
-  console.log(req.body)
+
   visualization.uploadAndSave(function (err) {
     if (!err) {
-      return res.redirect('/visualizations/' + visualization.slug)
+      return res.redirect('/sections/' + req.section.slug + '/chapters/' + req.chapter.slug + '/visualizations/' + visualization.slug)
     }
 
     res.render('visualizations/edit', {
@@ -100,6 +107,6 @@ exports.destroy = function(req, res){
   var visualization = req.visualization
   visualization.remove(function(err){
     req.flash('info', 'Deleted successfully')
-    res.redirect('/visualizations')
+    res.redirect('/sections/' + rew.section.slug + '/chapters/' + req.chapter.slug)
   })
 }

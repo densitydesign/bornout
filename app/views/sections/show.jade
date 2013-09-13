@@ -1,7 +1,7 @@
 extends ../layouts/default
 
 block main
-  h1= section.title
+  h3= section.title
 
 block content
   .row
@@ -9,11 +9,20 @@ block content
       p=section.body
       .meta.muted
 
+      h4 Chapters
+      - if (chapters.length)
+        - each chapter in chapters
+          .chapter
+            h5
+              a(href='/sections/' + section.slug + '/chapters/' + chapter.slug  , title=chapter.title) #{chapter.title}
+
+      a.btn(href='/sections/' + section.slug + '/chapters/new', title="New chapter") Add chapter
+
   p
     br
-    form.center.form-inline.confirm(action="/sections/"+section.id, method="post")
+    form.center.form-inline.confirm(action="/sections/"+section.slug, method="post")
       input(type='hidden', name='_csrf', value="#{csrf_token}")
-      a.btn(href='/sections/'+section._id+'/edit', title="edit") Edit
+      a.btn(href='/sections/'+section.slug+'/edit', title="edit") Edit
       &nbsp;&nbsp;
       input(type="hidden", name="_method", value="DELETE")
-      button.btn.btn-danger(type="submit") delete
+      button.btn.btn-danger(type="submit") Delete

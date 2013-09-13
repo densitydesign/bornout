@@ -5,8 +5,8 @@ header#header
         a.brand(href='/') WHO
         .nav-collapse.collapse
           ul.nav
-            li(class=isActive('/sections/new') ? 'active' : '')
-              a(href="/visualizations/new", title="new article") New
+            li(class=isActive('/sections') ? 'active' : '')
+              a(href="/sections", title="Sections") Sections
           ul.nav.pull-right
 
             if (req.isAuthenticated())

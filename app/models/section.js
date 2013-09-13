@@ -1,21 +1,37 @@
 
-/**
- * Module dependencies.
- */
+
+// Module dependencies
+
 
 var mongoose = require('mongoose')
   , env = process.env.NODE_ENV || 'development'
   , config = require('../../config/config')[env]
   , Schema = mongoose.Schema
+  , utils = require('../../lib/utils')
 
 
-/**
- * Section Schema
- */
+
+// Section Schema
 
 var SectionSchema = new Schema({
-  title: { type : String, default : '' }
+  title: { type : String, default : '' },
+  slug: { type : String, default : '' }
 })
+
+// Custom setters
+
+
+// Create the slug from the title
+
+SectionSchema.path('title').set(function (title) {
+  this.slug = slugify(title);
+  return title;
+});
+
+function slugify (title) {
+  return utils.removeDiacritics((title || '')).replace(/[^a-z0-9]/gi, '-').toLowerCase();
+}
+
 
 
 /**
@@ -89,8 +105,8 @@ SectionSchema.statics = {
    * @api private
    */
 
-  load: function (id, cb) {
-    this.findOne({ _id : id })
+  load: function (slug, cb) {
+    this.findOne({ slug : slug })
       //.populate('user', 'name email username')
       //.populate('comments.user')
       .exec(cb)
@@ -109,7 +125,7 @@ SectionSchema.statics = {
 
     this.find(criteria)
       //.populate('user', 'name username')
-      .sort({'createdAt': -1}) // sort by date
+      //.sort({'createdAt': -1}) // sort by date
       //.limit(options.perPage)
       //.skip(options.perPage * options.page)
       .exec(cb)

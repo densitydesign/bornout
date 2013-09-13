@@ -1,0 +1,33 @@
+extends ../layouts/default
+
+
+block main
+  h3= title
+  hr
+
+block content
+  - var action = '/sections/'+section.slug+'/chapters'
+  - action += chapter.isNew? '' : '/' + chapter.slug
+
+  p= section.title
+
+  .row
+    .span7
+      form(method="post", action=action, enctype="multipart/form-data")
+
+        input(type="hidden", name="_csrf", value="#{csrf_token}")
+
+        - if (!chapter.isNew)
+          input(type="hidden", name="_method", value="PUT")
+
+        label.control-label(for='title') Title
+        .controls
+          input#title.input-xlarge(type='text', name="title", value=chapter.title, placeholder='Enter the title')
+
+        label(for='description') Description
+        .controls
+          textarea#description(name="description", placeholder='Enter the Description') #{chapter.description}
+
+        button.btn.btn-primary(type='submit') Save changes
+        &nbsp;
+        a.btn(href='/sections/' + section.slug + '/chapters', title="cancel") Cancel

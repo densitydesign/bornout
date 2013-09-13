@@ -4,6 +4,7 @@
 
 var mongoose = require('mongoose')
   , Section = mongoose.model('Section')
+  , Chapter = mongoose.model('Chapter')
   , _ = require('underscore')
   , utils = require('../../lib/utils')
 
@@ -39,13 +40,20 @@ exports.index = function (req, res) {
  * Load
  */
 
-exports.load = function(req, res, next, id){
-
-  Section.load(id, function (err, section) {
+exports.load = function(req, res, next, slug){
+  Section.load(slug, function (err, section) {
     if (err) return next(err)
     if (!section) return next(new Error('not found'))
     req.section = section
-    next()
+
+    // loading chapters... maybe move this into models
+    var options = { criteria: { section: section } }
+    Chapter.list(options, function (err, chapters){
+      if (err) return next(err);
+      req.chapters = chapters;
+      next()
+    })
+
   })
 }
 
@@ -64,7 +72,8 @@ exports.new = function(req, res){
 exports.show = function(req, res){
   res.render('sections/show', {
     title: req.section.title,
-    section: req.section
+    section: req.section,
+    chapters : req.chapters
   })
 }
 
@@ -89,9 +98,9 @@ exports.create = function (req, res) {
   section.uploadAndSave(function (err) {
     if (!err) {
       req.flash('success', 'Successfully created section!')
-      return res.redirect('/sections/'+section._id)
+      return res.redirect('/sections/' + section.slug)
     }
-
+    console.log(err)
     res.render('sections/new', {
       title: 'New Section',
       section: section,
@@ -110,7 +119,7 @@ exports.update = function(req, res){
 
   section.uploadAndSave(function(err) {
     if (!err) {
-      return res.redirect('/sections/' + section._id)
+      return res.redirect('/sections/' + section.slug)
     }
 
     res.render('sections/edit', {

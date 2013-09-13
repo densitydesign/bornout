@@ -12,10 +12,11 @@ var VisualizationSchema = new Schema({
     title : { type : 'String', default : 'Untitled' },
     slug : { type : 'String', default : 'untitled' },
     description : { type : 'String', default : '' },
-    //chapter: { type : 'Schema.ObjectId', ref : 'Chapter' },
+    chapter : { type : Schema.ObjectId, ref : 'Chapter' },
     content : { type : 'String', default : '' },
     legend : { type : 'String', default : '' },
-    createdAt  : { type : Date, default : Date.now }
+    zoom : { type : Boolean, default : true },
+    createdAt : { type : Date, default : Date.now }
 })
 
 // Setters

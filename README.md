@@ -56,8 +56,9 @@ Create
 
 
 	{
-		title : { type : 'String, default : 'Untitled' },
+		title : { type : 'String', default : 'Untitled' },
 		description : { type : 'String, default : '' },
+		index : { type : 'Number', default : 0 }
 	}
 	
 
@@ -68,7 +69,8 @@ Create
 		title : { type : 'String, default : 'Untitled' },
 		description : { type : 'String, default : '' },
 		section: { type : Schema.ObjectId, ref : 'Section' },
-		protocol : { type : 'String, default : '' }
+		protocol : { type : 'String, default : '' },
+		index : { type : 'Number', default : 0 }
 	}
 
 ###Visualization
@@ -79,16 +81,6 @@ Create
 		chapter: { type : Schema.ObjectId, ref : 'Chapter' },
 		content : { type : 'String, default : '' },
 		legend : { type : 'String, default : '' },
-		createdAt  : {type : Date, default : Date.now}
+		createdAt  : {type : Date, default : Date.now},
+		index : { type : 'Number', default : 0 }
 	}
-
-## Routes
-
-	// Sections
-	app.get('/sections', sections.index)
-	app.get('/sections/new', sections.new)
-	app.post('/sections', sections.create)
-	app.get('/sections/:id', sections.show)
-	app.get('/sections/:id/edit', sections.edit)
-	app.put('/sections/:id', sections.update)
-	app.del('/sections/:id', sections.destroy)

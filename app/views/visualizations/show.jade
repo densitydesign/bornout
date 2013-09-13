@@ -15,9 +15,9 @@ block content
 
   p
     br
-    form.center.form-inline.confirm(action="/visualizations/"+visualization.slug, method="post")
+    form.center.form-inline.confirm(action='/sections/' + section.slug + '/chapters/' + chapter.slug + "/visualizations/"+visualization.slug, method="post")
       input(type='hidden', name='_csrf', value="#{csrf_token}")
-      a.btn(href='/visualizations/'+visualization.slug+'/edit', title="edit") Edit
+      a.btn(href='/sections/' + section.slug + '/chapters/' + chapter.slug + '/visualizations/'+visualization.slug+'/edit', title="edit") Edit
       &nbsp;&nbsp;
       input(type="hidden", name="_method", value="DELETE")
       button.btn.btn-danger(type="submit") delete
