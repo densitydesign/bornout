@@ -2,27 +2,29 @@ extends ../layouts/default
 
 block main
   h3= section.title
-
-block content
-  .row
-    .span9
-      p=section.body
-      .meta.muted
-
-      h4 Chapters
-      - if (chapters.length)
-        - each chapter in chapters
-          .chapter
-            h5
-              a(href='/sections/' + section.slug + '/chapters/' + chapter.slug  , title=chapter.title) #{chapter.title}
-
-      a.btn(href='/sections/' + section.slug + '/chapters/new', title="New chapter") Add chapter
-
+  p.muted= section.description
   p
-    br
     form.center.form-inline.confirm(action="/sections/"+section.slug, method="post")
       input(type='hidden', name='_csrf', value="#{csrf_token}")
-      a.btn(href='/sections/'+section.slug+'/edit', title="edit") Edit
-      &nbsp;&nbsp;
+      a.btn.btn-small(href='/sections/'+section.slug+'/edit', title="edit") Edit
+      &nbsp;
       input(type="hidden", name="_method", value="DELETE")
-      button.btn.btn-danger(type="submit") Delete
+      button.btn.btn-danger.btn-small(type="submit") Delete
+  .clearfix
+  hr
+
+block content
+
+  h4 Chapters
+  
+  - if (chapters.length)
+    .row-fluid
+      - each chapter in chapters
+        .span3
+          .thumbnail
+            .caption
+              h3
+                a(href='/sections/' + section.slug + '/chapters/' + chapter.slug  , title=chapter.title) #{chapter.title}
+              p= chapter.description
+
+  a.btn.btn-success.btn-small(href='/sections/' + section.slug + '/chapters/new', title="New chapter") New

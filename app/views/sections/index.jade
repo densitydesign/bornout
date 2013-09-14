@@ -1,17 +1,21 @@
 extends ../layouts/default
 
 block main
-  h3= title
+  h3
+    span= title
+    &nbsp;
+    a.btn.btn-small.btn-success(href="/sections/new") New
 
 block content
   - if (sections.length)
-    - each section in sections
-      .section
-        h5
-          a(href='/sections/'+section.slug, title=section.title) #{section.title}
-        p= section.body
+    .row-fluid
+      - each section in sections
+        .span3
+          .thumbnail
+            .caption
+              h3
+                a(href='/sections/'+section.slug, title=section.title) #{section.title}
+              p= section.description
 
   - else
     p.muted No sections.&nbsp;
-  
-  a.btn.btn-success(href="/sections/new") Create one

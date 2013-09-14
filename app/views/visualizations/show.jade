@@ -1,17 +1,20 @@
 extends ../layouts/default
 
 block main
-  h3= visualization.title
+  h3= chapter.title
 
 block content
-  .row
+  
+  .row-fluid
     .span9
-      p= visualization.slug
-      .meta.muted
-
+      .vis-content
+        != visualization.content
+    .span3
+      h4= visualization.title
       p= visualization.description
-
-      != visualization.content
+      hr
+      .vis-legend
+        != visualization.legend
 
   p
     br

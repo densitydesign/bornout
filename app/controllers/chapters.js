@@ -84,6 +84,7 @@ exports.create = function (req, res) {
     res.render('chapters/new', {
       title: 'New chapter',
       chapter: chapter,
+      section: req.section,
       errors: utils.errors(err.errors || err)
     })
   })
@@ -103,6 +104,7 @@ exports.update = function(req, res){
     res.render('chapters/edit', {
       title: 'Edit chapter',
       chapter: chapter,
+      section: req.section,
       errors: utils.errors(err.errors || err)
     })
   })

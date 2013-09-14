@@ -77,6 +77,8 @@ exports.create = function (req, res) {
     res.render('visualizations/new', {
       title: 'New Visualization',
       visualization: visualization,
+    	chapter: req.chapter,
+    	section: req.section,
       errors: utils.errors(err.errors || err)
     })
   })
@@ -96,6 +98,8 @@ exports.update = function(req, res){
     res.render('visualizations/edit', {
       title: 'Edit visualization',
       visualization: visualization,
+      chapter: req.chapter,
+    	section: req.section,
       errors: utils.errors(err.errors || err)
     })
   })
@@ -107,6 +111,6 @@ exports.destroy = function(req, res){
   var visualization = req.visualization
   visualization.remove(function(err){
     req.flash('info', 'Deleted successfully')
-    res.redirect('/sections/' + rew.section.slug + '/chapters/' + req.chapter.slug)
+    res.redirect('/sections/' + req.section.slug + '/chapters/' + req.chapter.slug)
   })
 }

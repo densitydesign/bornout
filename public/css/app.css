@@ -28,7 +28,7 @@ body {
   /* This prevents unwanted scrollbars from showing up on the body and wrapper in IE. */
   overflow: hidden;
   background-color: white;
-  width: 530px;
+  width: 100%;
 
   /* Copied from Bootstrap's textarea */
   display: inline-block;
@@ -59,4 +59,11 @@ body {
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
      -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
           box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);  
+}
+
+
+.vis-legend,
+.vis-content {
+	overflow: hidden;
+	border: 1px solid #ddd;
 }

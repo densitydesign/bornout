@@ -11,19 +11,21 @@ block content
 
   .row
     .span7
-      form.form-horizontal(method="post", action=action, enctype="multipart/form-data")
+      form(method="post", action=action, enctype="multipart/form-data")
 
         input(type="hidden", name="_csrf", value="#{csrf_token}")
 
         - if (!section.isNew)
           input(type="hidden", name="_method", value="PUT")
 
-        .control-group
-          label.control-label(for='title') Title
-          .controls
-            input#title.input-xlarge(type='text', name="title", value=section.title, placeholder='Enter the title')
+        label.control-label(for='title') Title
+        .controls
+          input#title.input-xlarge(type='text', name="title", value=section.title, placeholder='Enter the title')
 
-        .form-actions
-          button.btn.btn-primary(type='submit') Save changes
-          &nbsp;
-          a.btn(href='/sections', title="cancel") Cancel
+        label(for='description') Description
+        .controls
+          textarea#description(name="description", placeholder='Enter the Description') #{section.description}
+
+        button.btn.btn-primary(type='submit') Save changes
+        &nbsp;
+        a.btn(href='/sections', title="cancel") Cancel

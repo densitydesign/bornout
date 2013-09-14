@@ -138,7 +138,7 @@ exports.update = function(req, res){
 exports.destroy = function(req, res){
   var section = req.section
   section.remove(function(err){
-    req.flash('info', 'Deleted successfully')
+    req.flash('info', 'Section ' + section.title + ' deleted successfully')
     res.redirect('/sections')
   })
 }

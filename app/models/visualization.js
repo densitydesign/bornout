@@ -9,14 +9,15 @@ var mongoose = require('mongoose')
 // Schema
 
 var VisualizationSchema = new Schema({
-    title : { type : 'String', default : 'Untitled' },
-    slug : { type : 'String', default : 'untitled' },
-    description : { type : 'String', default : '' },
+    title : { type : String, default : '' },
+    slug : { type : String, default : '' },
+    description : { type : String, default : '' },
     chapter : { type : Schema.ObjectId, ref : 'Chapter' },
-    content : { type : 'String', default : '' },
-    legend : { type : 'String', default : '' },
+    content : { type : String, default : '' },
+    legend : { type : String, default : '' },
     zoom : { type : Boolean, default : true },
-    createdAt : { type : Date, default : Date.now }
+    createdAt : { type : Date, default : Date.now },
+    index : { type : Number, default : 1 }
 })
 
 // Setters
@@ -34,6 +35,12 @@ VisualizationSchema.path('title').set(function (title) {
 function slugify (title) {
   return utils.removeDiacritics((title || '')).replace(/[^a-z0-9]/gi, '-').toLowerCase();
 }
+
+// Validation
+
+VisualizationSchema.path('title').validate(function (title) {
+  return title.length > 0
+}, 'Visualization title cannot be blank')
 
 // Methods
 

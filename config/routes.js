@@ -82,6 +82,8 @@ module.exports = function (app, passport) {
   app.param('slug', visualizations.load)
 
   // home route
-  app.get('/', sections.index)
+  app.get('/', function (req, res){
+    res.render('index')
+  })
 
 }

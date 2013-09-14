@@ -9,11 +9,12 @@ var mongoose = require('mongoose')
 // Schema
 
 var ChapterSchema = new Schema({
-	title : { type : 'String', default : '' },
+	title : { type : String, default : '' },
 	slug : { type : String, default : '' },
-  description : { type : 'String', default : '' },
+  description : { type : String, default : '' },
   section: { type : Schema.ObjectId, ref : 'Section' },
-  protocol : { type : 'String', default : 'link' }
+  protocol : { type : String, default : 'link' },
+  index : { type : Number, default : 1 }
 })
 
 // Create the slug from the title
@@ -28,11 +29,17 @@ function slugify (title) {
 }
 
 
+// Validations
+
+ChapterSchema.path('title').validate(function (title) {
+  return title.length > 0
+}, 'Chapter title cannot be blank')
+
 // Methods
 
 ChapterSchema.methods = {
 	uploadAndSave: function (cb) {
-    this.save(cb);
+    return this.save(cb);
   }
 }
 

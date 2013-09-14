@@ -6,7 +6,7 @@ block main
   hr
 
 block content
-  - var action = '/sections/'+section.slug+'/chapters'
+  - var action = '/sections/' + section.slug + '/chapters'
   - action += chapter.isNew? '' : '/' + chapter.slug
 
   p= section.title
@@ -30,4 +30,4 @@ block content
 
         button.btn.btn-primary(type='submit') Save changes
         &nbsp;
-        a.btn(href='/sections/' + section.slug + '/chapters', title="cancel") Cancel
+        a.btn(href='/sections/' + section.slug, title="cancel") Cancel

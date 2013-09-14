@@ -1,7 +1,10 @@
 extends ../layouts/default
 
 block main
-  h3= chapter.title
+  h3
+    span.muted= section.title + "/ "
+    span= chapter.title
+  hr
 
 block content
   .row

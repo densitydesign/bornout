@@ -8,48 +8,59 @@ block content
   - var action = '/sections/' + section.slug + '/chapters/' + chapter.slug + '/visualizations'
   - action += visualization.isNew? '' : '/' + visualization.slug
 
-  .row
-    .span7
-      form(method="post", action=action, enctype="multipart/form-data")
+  form(method="post", action=action, enctype="multipart/form-data")
 
-        input(type="hidden", name="_csrf", value="#{csrf_token}")
-        input(id="__content" type="hidden", name="__content", value="#{visualization.content}")
-        //input(id="__is-new" type="hidden", name="__isNew", value="#{visualization.isNew}")
+    input(type="hidden", name="_csrf", value="#{csrf_token}")
+    //input(id="__content" type="hidden", name="__content", value="#{visualization.content}")
+    //input(id="__is-new" type="hidden", name="__isNew", value="#{visualization.isNew}")
 
-        - if (!visualization.isNew)
-          input(type="hidden", name="_method", value="PUT")
+    - if (!visualization.isNew)
+      input(type="hidden", name="_method", value="PUT")
 
-        label(for='title') Title
-        .controls
-          input#title.input-xlarge(type='text', name="title", value=visualization.title, placeholder='Enter the title')
+    label(for='title') Title
+    .controls
+      input#title.input-xlarge(type='text', name="title", value=visualization.title, placeholder='Enter the title')
 
-        label(for='description') Description
-        .controls
-          textarea#description(name="description", placeholder='Enter the Description') #{visualization.description}
+    label(for='description') Description
+    .controls
+      textarea#description.span4(name="description", placeholder='Enter the Description') #{visualization.description}
 
+    .row-fluid
+      .span8
         label(for='content') Content
         .controls
           textarea#content-area(name="content", value=visualization.content) #{visualization.content}
+      .span4
+        label(for='legend') Legend
+        .controls
+          textarea#legend-area(name="legend", value=visualization.legend) #{visualization.legend}
 
-        button.btn.btn-primary(type='submit') Save changes
-        &nbsp;
-        a.btn(href='/sections/' + section.slug + '/chapters/' + chapter.slug, title="cancel") Cancel
+    label(for='title') Index
+    .controls
+      input#index.input(type='number', name="index", value=visualization.index)
+      span.help-block The index
+
+    button.btn.btn-primary(type='submit') Save changes
+    &nbsp;
+    a.btn(href='/sections/' + section.slug + '/chapters/' + chapter.slug, title="cancel") Cancel
 
 
 
   script.
     window.addEventListener('load', function(){
-      var content = $("#__content").val();
+      
+      // content
       var contentArea = document.getElementById('content-area');
-      var editor = CodeMirror.fromTextArea(contentArea, {
+      var contentEditor = CodeMirror.fromTextArea(contentArea, {
         mode: "text/html",
       });
+      contentEditor.on("change", function (cm, obj) { contentArea.value = cm.getValue(); } )
 
-      editor.on("change", function (cm, obj) { contentArea.value = cm.getValue(); } )
+      // legend
+      var legendArea = document.getElementById('legend-area');
+      var legendEditor = CodeMirror.fromTextArea(legendArea, {
+        mode: "text/html",
+      });
+      legendEditor.on("change", function (cm, obj) { legendEditor.value = cm.getValue(); } )
 
-
-
-      //var isNew = $("#is-new").val();
-      //if (isNew) return;
-      //editor.setValue("content")
     })

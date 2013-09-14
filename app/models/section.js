@@ -15,7 +15,9 @@ var mongoose = require('mongoose')
 
 var SectionSchema = new Schema({
   title: { type : String, default : '' },
-  slug: { type : String, default : '' }
+  slug: { type : String, default : '' },
+  description : { type : String, default : '' },
+  index : { type : Number, default : 1 }
 })
 
 // Custom setters
@@ -33,15 +35,26 @@ function slugify (title) {
 }
 
 
-
-/**
- * Validations
- */
+// Validations
 
 SectionSchema.path('title').validate(function (title) {
   return title.length > 0
 }, 'Section title cannot be blank')
 
+
+/* Pres
+
+SectionSchema.pre('remove', function (next) {
+  var imager = new Imager(imagerConfig, 'S3')
+  var files = this.image.files
+
+  // if there are files associated with the item, remove from the cloud too
+  imager.remove(files, function (err) {
+    if (err) return next(err)
+  }, 'article')
+
+  next()
+})*/
 
 /**
  * Methods
@@ -58,7 +71,7 @@ SectionSchema.methods = {
    */
 
   uploadAndSave: function (cb) {
-    this.save(cb);
+    return this.save(cb);
   }
 
   /**
