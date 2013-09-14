@@ -13,11 +13,18 @@ block content
     .span3
       h4= visualization.title
       p= visualization.description
-      
+
       - if (prevPage)
         a(href="/sections/" + section.slug + "/chapters/" + chapter.slug + "/visualizations/" + prevPage.slug) Prev
+      - else
+          a(href="/sections/" + section.slug + "/chapters/" + chapter.slug) Prev
+
       - if (nextPage)
         a(href="/sections/" + section.slug + "/chapters/" + chapter.slug + "/visualizations/" + nextPage.slug) Next
+      - else
+        - if (nextChapter)
+          a(href="/sections/" + section.slug + "/chapters/" + nextChapter.slug) Next
+
       hr
       .vis-legend
         != visualization.legend

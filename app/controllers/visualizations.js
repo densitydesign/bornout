@@ -19,7 +19,6 @@ exports.load = function(req, res, next, slug) {
   	var options = { criteria: { chapter : vis.chapter, index : { '$gt' : vis.index } } }
   	Visualization.list(options, function (err, nextvis) {
   		
-  		//todo if undefined... chapter
   		req.nextPage=nextvis[0]
 
   		options = { criteria: { chapter : vis.chapter, index : { '$lt' : vis.index } } }
@@ -76,7 +75,9 @@ exports.show = function(req, res){
     section: req.section,
     chapter: req.chapter,
     prevPage: req.prevPage,
-    nextPage: req.nextPage
+    nextPage: req.nextPage,
+    prevChapter : req.prevChapter,
+    nextChapter : req.nextChapter
   })
 }
 

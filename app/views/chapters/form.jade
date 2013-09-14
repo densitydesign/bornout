@@ -26,11 +26,16 @@ block content
 
         label(for='description') Description
         .controls
-          textarea#description(name="description", placeholder='Enter the Description') #{chapter.description}
+          textarea#description.span4(name="description", placeholder='Enter the Description') #{chapter.description}
 
         label(for='content') Protocol
         .controls
           textarea#protocol-area(name="protocol", value=chapter.protocol) #{chapter.protocol}
+
+        label(for='title') Index
+        .controls
+          input#index.input(type='number', name="index", value=chapter.index)
+          span.help-block The index
 
         button.btn.btn-primary(type='submit') Save changes
         &nbsp;

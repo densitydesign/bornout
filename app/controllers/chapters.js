@@ -20,7 +20,25 @@ exports.load = function(req, res, next, slug) {
     Visualization.list(options, function (err, visualizations){
       if (err) return next(err);
       req.visualizations = visualizations;
-      next()
+      
+      // retrieving next
+      options = { criteria: { section : req.section, index : { '$gt' : chapter.index } } }
+      Chapter.list(options, function (err, nextChapters) {
+        req.nextChapter = nextChapters[0]
+        options = { criteria: { section : req.section, index : { '$lt' : chapter.index } } }
+        Chapter.list(options, function (err, prevChapters) {
+          var prevChapter = req.prevChapter = prevChapters[prevChapters.length-1]
+          
+          var opt = { criteria: { chapter: prevChapter } }
+          Visualization.list(opt, function (err, viss){
+            console.log(viss)
+            req.prevVisualization = viss[viss.length-1]
+            next()
+          })
+
+        })
+      })
+
     })
   })
 }
@@ -64,7 +82,10 @@ exports.show = function(req, res){
     title: req.chapter.title,
     chapter: req.chapter,
     section: req.section,
-    visualizations: req.visualizations
+    prevChapter : req.prevChapter,
+    nextChapter : req.nextChapter,
+    visualizations: req.visualizations,
+    prevVisualization: req.prevVisualization
   })
 }
 
