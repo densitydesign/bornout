@@ -64,6 +64,6 @@ body {
 
 .vis-legend,
 .vis-content {
-	overflow: hidden;
+	overflow: scroll;
 	border: 1px solid #ddd;
 }

@@ -26,7 +26,6 @@ exports.load = function(req, res, next, slug) {
   		options = { criteria: { chapter : vis.chapter, index : { '$lt' : vis.index } } }
   		
   		Visualization.list(options, function (err, previs) {
-  			console.log("PRE", previs)
 	  		req.prevPage=previs[previs.length-1]
 	  		next()
 	  	})
@@ -87,7 +86,8 @@ exports.show = function(req, res){
 
 exports.create = function (req, res) {
   var visualization = new Visualization(req.body)
-	visualization.chapter = req.chapter
+	visualization.chapter = req.chapter;
+	visualization.zoom = req.body.zoom == undefined ? false : true;
 
   visualization.uploadAndSave(function (err) {
     if (!err) {
@@ -108,8 +108,9 @@ exports.create = function (req, res) {
 // Update
 
 exports.update = function(req, res){
-  var visualization = req.visualization
-  visualization = _.extend(visualization, req.body)
+  var visualization = req.visualization;
+  visualization = _.extend(visualization, req.body);
+  visualization.zoom = req.body.zoom == undefined ? false : true;
 
   visualization.uploadAndSave(function (err) {
     if (!err) {

@@ -35,7 +35,11 @@ block content
         .controls
           textarea#legend-area(name="legend", value=visualization.legend) #{visualization.legend}
 
-    label(for='title') Index
+    label(for='zoom')
+      input#zoom.input(type='checkbox', name="zoom", value=visualization.zoom.toString(), checked=visualization.zoom)
+      |  Zoom
+
+    label(for='index') Index
     .controls
       input#index.input(type='number', name="index", value=visualization.index)
       span.help-block The index

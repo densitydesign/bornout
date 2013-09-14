@@ -12,13 +12,22 @@ var users = require('../app/controllers/users')
   , sections = require('../app/controllers/sections')
   , chapters = require('../app/controllers/chapters')
   , visualizations = require('../app/controllers/visualizations')
-  , auth = require('./middlewares/authorization')
+  //, env = process.env.NODE_ENV || 'development'
+  //, config = require('./config')[env]
+  //, express = require('express')
+  //, auth = require('./middlewares/authorization')
+
+//var auth = express.basicAuth(config.user, config.password)
+
 
 /**
  * Route middlewares
  */
 
-var articleAuth = [auth.requiresLogin, auth.article.hasAuthorization]
+// Authenticator
+
+
+//var articleAuth = [auth.requiresLogin, auth.article.hasAuthorization]
 
 /**
  * Expose routes
@@ -26,7 +35,8 @@ var articleAuth = [auth.requiresLogin, auth.article.hasAuthorization]
 
 module.exports = function (app, passport) {
 
-  // user routes
+
+  /* user routes
   app.get('/login', users.login)
   app.get('/signup', users.signup)
   app.get('/logout', users.logout)
@@ -38,15 +48,6 @@ module.exports = function (app, passport) {
     }), users.session)
   app.get('/users/:userId', users.show)
   app.param('userId', users.user)
-
-  /* sections routes
-  app.get('/sections', sections.index)
-  app.get('/sections/new', sections.new)
-  app.post('/sections', sections.create)
-  app.get('/sections/:id', sections.show)
-  app.get('/sections/:id/edit', sections.edit)
-  app.put('/sections/:id', sections.update)
-  app.del('/sections/:id', sections.destroy)
   */
 
   // section routes
