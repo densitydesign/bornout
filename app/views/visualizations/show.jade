@@ -1,7 +1,8 @@
 extends ../layouts/default
 
 block main
-  h3= chapter.title
+  h3
+    a(href="/sections/" + section.slug + "/chapters/" + chapter.slug) #{chapter.title}
 
 block content
   
@@ -12,6 +13,11 @@ block content
     .span3
       h4= visualization.title
       p= visualization.description
+      
+      - if (prevPage)
+        a(href="/sections/" + section.slug + "/chapters/" + chapter.slug + "/visualizations/" + prevPage.slug) Prev
+      - if (nextPage)
+        a(href="/sections/" + section.slug + "/chapters/" + chapter.slug + "/visualizations/" + nextPage.slug) Next
       hr
       .vis-legend
         != visualization.legend

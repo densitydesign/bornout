@@ -2,6 +2,7 @@
 
 var mongoose = require('mongoose')
   , Visualization = mongoose.model('Visualization')
+  , Chapter = mongoose.model('Chapter')
   , utils = require('../../lib/utils')
   , _ = require('underscore')
 
@@ -13,7 +14,22 @@ exports.load = function(req, res, next, slug) {
     if (err) return next(err)
     if (!vis) return next(new Error('not found'))
     req.visualization = vis
-    next()
+
+  	// retrieving next
+  	var options = { criteria: { chapter : vis.chapter, index : { '$gt' : vis.index } } }
+  	Visualization.list(options, function (err, nextvis) {
+  		
+  		//todo if undefined... chapter
+  		req.nextPage=nextvis[0]
+
+  		options = { criteria: { chapter : vis.chapter, index : { '$lt' : vis.index } } }
+  		
+  		Visualization.list(options, function (err, previs) {
+  			console.log("PRE", previs)
+	  		req.prevPage=previs[previs.length-1]
+	  		next()
+	  	})
+  	})
   })
 }
 
@@ -58,7 +74,9 @@ exports.show = function(req, res){
     title: req.visualization.title,
     visualization: req.visualization,
     section: req.section,
-    chapter: req.chapter
+    chapter: req.chapter,
+    prevPage: req.prevPage,
+    nextPage: req.nextPage
   })
 }
 

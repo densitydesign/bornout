@@ -19,7 +19,6 @@ exports.load = function(req, res, next, slug) {
     var options = { criteria: { chapter: chapter } }
     Visualization.list(options, function (err, visualizations){
       if (err) return next(err);
-      console.log(visualizations)
       req.visualizations = visualizations;
       next()
     })

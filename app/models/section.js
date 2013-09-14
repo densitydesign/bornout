@@ -137,6 +137,7 @@ SectionSchema.statics = {
     var criteria = options.criteria || {}
 
     this.find(criteria)
+      .sort({'index': 1})
       //.populate('user', 'name username')
       //.sort({'createdAt': -1}) // sort by date
       //.limit(options.perPage)

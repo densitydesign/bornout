@@ -2,24 +2,30 @@ extends ../layouts/default
 
 block main
   h3
-    span.muted= section.title + "/ "
+    a(href="/sections/" + section.slug) #{section.title}
+    span /
     span= chapter.title
   hr
 
 block content
-  .row
+
+  .row-fluid
     .span9
-      p=chapter.body
-      .meta.muted
-
+      .chapter-protocol
+        != chapter.protocol
+    .span3
       h4 Visualizations
+      p= chapter.description
+      hr
       - if (visualizations.length)
-        - each visualization in visualizations
-          .visualization
-            h5
-              a(href='/sections/' + section.slug + '/chapters/' + chapter.slug + '/visualizations/' + visualization.slug  , title=visualization.title) #{visualization.title}
+        ul.unstyled
+          - each visualization in visualizations
+              li
+                span= visualization.index
+                span &nbsp;
+                a(href='/sections/' + section.slug + '/chapters/' + chapter.slug + '/visualizations/' + visualization.slug  , title=visualization.title) #{visualization.title}
 
-      a.btn.btn-success(href='/sections/' + section.slug + '/chapters/' + chapter.slug + '/visualizations/new', title="New visualization") Add visualization
+      a.btn.btn-success.btn-small(href='/sections/' + section.slug + '/chapters/' + chapter.slug + '/visualizations/new', title="New visualization") New
 
   p
     br

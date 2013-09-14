@@ -28,6 +28,22 @@ block content
         .controls
           textarea#description(name="description", placeholder='Enter the Description') #{chapter.description}
 
+        label(for='content') Protocol
+        .controls
+          textarea#protocol-area(name="protocol", value=chapter.protocol) #{chapter.protocol}
+
         button.btn.btn-primary(type='submit') Save changes
         &nbsp;
         a.btn(href='/sections/' + section.slug, title="cancel") Cancel
+
+  script.
+    window.addEventListener('load', function(){
+      
+      // content
+      var protocolArea = document.getElementById('protocol-area');
+      var protocolEditor = CodeMirror.fromTextArea(protocolArea, {
+        mode: "text/html",
+      });
+      protocolEditor.on("change", function (cm, obj) { protocolArea.value = cm.getValue(); } )
+
+    })

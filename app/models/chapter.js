@@ -58,6 +58,7 @@ ChapterSchema.statics = {
     var criteria = options.criteria || {}
 
     this.find(criteria)
+  		.sort({'index': 1})
       .exec(cb)
   }
 }

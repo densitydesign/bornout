@@ -42,6 +42,10 @@ VisualizationSchema.path('title').validate(function (title) {
   return title.length > 0
 }, 'Visualization title cannot be blank')
 
+VisualizationSchema.path('title').validate(function (title) {
+  return title.toLowerCase() != "new"
+}, 'You cannot use "New" as a name for the visualization')
+
 // Methods
 
 VisualizationSchema.methods = {
@@ -69,7 +73,7 @@ VisualizationSchema.statics = {
     var criteria = options.criteria || {}
 
     this.find(criteria)
-      .sort({'createdAt': -1}) // sort by date
+      .sort({'index': 1}) // sort by date
       .exec(cb)
   }
 
