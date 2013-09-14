@@ -12,12 +12,12 @@ var users = require('../app/controllers/users')
   , sections = require('../app/controllers/sections')
   , chapters = require('../app/controllers/chapters')
   , visualizations = require('../app/controllers/visualizations')
-  //, env = process.env.NODE_ENV || 'development'
-  //, config = require('./config')[env]
-  //, express = require('express')
+  , env = process.env.NODE_ENV || 'development'
+  , config = require('./config')[env]
+  , express = require('express')
   //, auth = require('./middlewares/authorization')
 
-//var auth = express.basicAuth(config.user, config.password)
+var auth = express.basicAuth(config.user, config.password)
 
 
 /**
@@ -28,6 +28,9 @@ var users = require('../app/controllers/users')
 
 
 //var articleAuth = [auth.requiresLogin, auth.article.hasAuthorization]
+
+var auth = express.basicAuth(config.username, config.password)
+
 
 /**
  * Expose routes
@@ -52,38 +55,38 @@ module.exports = function (app, passport) {
 
   // section routes
 
-  app.get('/sections', sections.index)
-  app.get('/sections/new', sections.new)
-  app.post('/sections', sections.create)
-  app.get('/sections/:sectionSlug', sections.show)
-  app.get('/sections/:sectionSlug/edit', sections.edit)
-  app.put('/sections/:sectionSlug', sections.update)
-  app.del('/sections/:sectionSlug', sections.destroy)
+  app.get('/sections', auth, sections.index)
+  app.get('/sections/new', auth, sections.new)
+  app.post('/sections', auth, sections.create)
+  app.get('/sections/:sectionSlug', auth, sections.show)
+  app.get('/sections/:sectionSlug/edit', auth, sections.edit)
+  app.put('/sections/:sectionSlug', auth, sections.update)
+  app.del('/sections/:sectionSlug', auth, sections.destroy)
 
   // chapter routes
 
-  app.get('/sections/:sectionSlug/chapters/new', chapters.new)
-  app.post('/sections/:sectionSlug/chapters', chapters.create)
-  app.get('/sections/:sectionSlug/chapters/:chapterSlug', chapters.show)
-  app.get('/sections/:sectionSlug/chapters/:chapterSlug/edit', chapters.edit)
-  app.put('/sections/:sectionSlug/chapters/:chapterSlug', chapters.update)
-  app.del('/sections/:sectionSlug/chapters/:chapterSlug', chapters.destroy)
+  app.get('/sections/:sectionSlug/chapters/new', auth, chapters.new)
+  app.post('/sections/:sectionSlug/chapters', auth, chapters.create)
+  app.get('/sections/:sectionSlug/chapters/:chapterSlug', auth, chapters.show)
+  app.get('/sections/:sectionSlug/chapters/:chapterSlug/edit', auth, chapters.edit)
+  app.put('/sections/:sectionSlug/chapters/:chapterSlug', auth, chapters.update)
+  app.del('/sections/:sectionSlug/chapters/:chapterSlug', auth, chapters.destroy)
 
   // vis routes
 
-  app.get('/sections/:sectionSlug/chapters/:chapterSlug/visualizations/new', visualizations.new)
-  app.post('/sections/:sectionSlug/chapters/:chapterSlug/visualizations', visualizations.create)
-  app.get('/sections/:sectionSlug/chapters/:chapterSlug/visualizations/:slug', visualizations.show)
-  app.get('/sections/:sectionSlug/chapters/:chapterSlug/visualizations/:slug/edit', visualizations.edit)
-  app.put('/sections/:sectionSlug/chapters/:chapterSlug/visualizations/:slug', visualizations.update)
-  app.del('/sections/:sectionSlug/chapters/:chapterSlug/visualizations/:slug', visualizations.destroy)
+  app.get('/sections/:sectionSlug/chapters/:chapterSlug/visualizations/new', auth, visualizations.new)
+  app.post('/sections/:sectionSlug/chapters/:chapterSlug/visualizations', auth, visualizations.create)
+  app.get('/sections/:sectionSlug/chapters/:chapterSlug/visualizations/:slug', auth, visualizations.show)
+  app.get('/sections/:sectionSlug/chapters/:chapterSlug/visualizations/:slug/edit', auth, visualizations.edit)
+  app.put('/sections/:sectionSlug/chapters/:chapterSlug/visualizations/:slug', auth, visualizations.update)
+  app.del('/sections/:sectionSlug/chapters/:chapterSlug/visualizations/:slug', auth, visualizations.destroy)
 
   app.param('sectionSlug', sections.load)
   app.param('chapterSlug', chapters.load)
   app.param('slug', visualizations.load)
 
   // home route
-  app.get('/', function (req, res){
+  app.get('/', auth, function (req, res){
     res.render('index')
   })
 
