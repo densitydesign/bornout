@@ -10,7 +10,9 @@ var mongoose = require('mongoose')
 // Load
 
 exports.load = function(req, res, next, slug) {
-  Visualization.load(slug, function (err, vis) {
+
+  Visualization.load(slug, req.chapter, function (err, vis) {
+    
     if (err) return next(err)
     if (!vis) return next(new Error('not found'))
     req.visualization = vis

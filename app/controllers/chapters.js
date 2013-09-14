@@ -23,15 +23,20 @@ exports.load = function(req, res, next, slug) {
       
       // retrieving next
       options = { criteria: { section : req.section, index : { '$gt' : chapter.index } } }
+      
       Chapter.list(options, function (err, nextChapters) {
         req.nextChapter = nextChapters[0]
+
         options = { criteria: { section : req.section, index : { '$lt' : chapter.index } } }
+        console.log(options)
         Chapter.list(options, function (err, prevChapters) {
+
           var prevChapter = req.prevChapter = prevChapters[prevChapters.length-1]
-          
-          var opt = { criteria: { chapter: prevChapter } }
-          Visualization.list(opt, function (err, viss){
-            console.log(viss)
+
+          options = { criteria: { chapter: prevChapter } }
+
+          Visualization.list(options, function (err, viss){
+            //console.log(viss)
             req.prevVisualization = viss[viss.length-1]
             next()
           })

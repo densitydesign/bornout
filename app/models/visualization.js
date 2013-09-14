@@ -62,8 +62,8 @@ VisualizationSchema.statics = {
 
 	// Find visualization by slug
 
-	load: function (slug, cb) {
-    this.findOne({ slug : slug })
+	load: function (slug, chapter, cb) {
+    this.findOne({ slug : slug, chapter : chapter })
       .exec(cb)
   },
 

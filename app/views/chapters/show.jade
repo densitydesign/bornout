@@ -15,7 +15,7 @@ block content
         != chapter.protocol
     .span3
       - if (prevVisualization)
-        a(href='/sections/' + section.slug + '/chapters/' + chapter.slug + '/visualizations/' + prevVisualization.slug  , title=prevVisualization.title) Pre
+        a(href='/sections/' + section.slug + '/chapters/' + prevChapter.slug + '/visualizations/' + prevVisualization.slug  , title=prevVisualization.title) Pre
       - if (visualizations.length)
         a(href='/sections/' + section.slug + '/chapters/' + chapter.slug + '/visualizations/' + visualizations[0].slug  , title=visualizations[0].title) Next
       p= chapter.description

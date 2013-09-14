@@ -13,7 +13,7 @@ var ChapterSchema = new Schema({
 	slug : { type : String, default : '' },
   description : { type : String, default : '' },
   section: { type : Schema.ObjectId, ref : 'Section' },
-  protocol : { type : String, default : 'link' },
+  protocol : { type : String, default : '' },
   index : { type : Number, default : 1 }
 })
 
