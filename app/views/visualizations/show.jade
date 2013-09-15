@@ -31,8 +31,7 @@ block content
     .span9
       .vis-content
         != visualization.content
-        button.btn.btn-mini(type='button', id="resetZoom")
-          i.icon-fullscreen
+
     .span3
       p!= visualization.description
 
@@ -72,7 +71,12 @@ block content
       d3.select("svg")
       .attr("width", width)
       .call(zoomBehavior.scaleExtent([1,10]).on("zoom", zoom));
-      d3.select("#resetZoom").on("click", function(d){
+      d3.select(".vis-content")
+          .append("button")
+          .attr("class", "btn btn-mini")
+          .attr("type", "button")
+          .attr("id", "resetZoom")
+          .on("click", function(d){
             zoomBehavior.scale(1);
             zoomBehavior.translate([0, 0]);
             d3.select("svg").select("g").transition().duration(500).attr('transform', 'translate(' + zoomBehavior.translate() + ') scale(' + zoomBehavior.scale() + ')');
