@@ -17,10 +17,10 @@ block main
     span(class='btn-group')
       small
         form.center.form-inline.confirm(action='/sections/' + section.slug + '/chapters/' + chapter.slug, method="post", id='ed')
-        input(type='hidden', name='_csrf', value="#{csrf_token}")
-        a.btn.btn-mini(href='/sections/' + section.slug + '/chapters/' + chapter.slug + '/edit', title="edit") Edit
-        input(type="hidden", name="_method", value="DELETE")
-        button.btn.btn-danger.btn-mini(type="submit") Delete
+          input(type='hidden', name='_csrf', value="#{csrf_token}")
+          a.btn.btn-mini(href='/sections/' + section.slug + '/chapters/' + chapter.slug + '/edit', title="edit") Edit
+          input(type="hidden", name="_method", value="DELETE")
+          button.btn.btn-danger.btn-mini(type="submit") Delete
 
 block content
 

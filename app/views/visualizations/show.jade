@@ -34,7 +34,7 @@ block content
         button.btn.btn-mini(type='button', id="resetZoom")
           i.icon-fullscreen
     .span3
-      p= visualization.description
+      p!= visualization.description
 
       input(id="zoom", type="hidden", value=visualization.zoom.toString())
 
@@ -66,11 +66,17 @@ block content
     window.addEventListener('load', function(){
       var zoomable = $('#zoom').val();
       if(zoomable != "true") return;
+      var zoomBehavior = d3.behavior.zoom();
       var width = $(".vis-content").width();
       d3.select(".vis-content").style("overflow","hidden")
       d3.select("svg")
       .attr("width", width)
-      .call(d3.behavior.zoom().scaleExtent([1,10]).on("zoom", zoom))
+      .call(zoomBehavior.scaleExtent([1,10]).on("zoom", zoom));
+      d3.select("#resetZoom").on("click", function(d){
+            zoomBehavior.scale(1);
+            zoomBehavior.translate([0, 0]);
+            d3.select("svg").select("g").transition().duration(500).attr('transform', 'translate(' + zoomBehavior.translate() + ') scale(' + zoomBehavior.scale() + ')');
+          })
 
       function zoom() {
         d3.select("svg").select("g").attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
