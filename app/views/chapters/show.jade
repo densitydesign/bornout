@@ -1,11 +1,26 @@
 extends ../layouts/default
 
 block main
-  h3
-    a(href="/sections/" + section.slug) #{section.title}
-    span /
-    span= chapter.title
-  hr
+  ul.breadcrumb
+    li
+      a(href="/") Home 
+      span.divider /
+    li
+      a(href="/sections/") Sections 
+      span.divider /
+    li
+      a(href="/sections/" + section.slug) #{section.title} 
+      span.divider /
+    li.active= chapter.title
+
+  h3= chapter.title + ' '
+    span(class='btn-group')
+      small
+        form.center.form-inline.confirm(action='/sections/' + section.slug + '/chapters/' + chapter.slug, method="post", id='ed')
+        input(type='hidden', name='_csrf', value="#{csrf_token}")
+        a.btn.btn-mini(href='/sections/' + section.slug + '/chapters/' + chapter.slug + '/edit', title="edit") Edit
+        input(type="hidden", name="_method", value="DELETE")
+        button.btn.btn-danger.btn-mini(type="submit") Delete
 
 block content
 
@@ -14,28 +29,28 @@ block content
       .chapter-protocol
         != chapter.protocol
     .span3
-      - if (prevVisualization)
-        a(href='/sections/' + section.slug + '/chapters/' + prevChapter.slug + '/visualizations/' + prevVisualization.slug  , title=prevVisualization.title) Pre
-      - if (visualizations.length)
-        a(href='/sections/' + section.slug + '/chapters/' + chapter.slug + '/visualizations/' + visualizations[0].slug  , title=visualizations[0].title) Next
       p= chapter.description
       hr
-      h4 Visualizations
+      h4 Visualizations 
+        span.btn-group
+          small
+            a.btn.btn-success.btn-mini(href='/sections/' + section.slug + '/chapters/' + chapter.slug + '/visualizations/new', title="New visualization") New
       - if (visualizations.length)
-        ul.unstyled
-          - each visualization in visualizations
-              li
-                span= visualization.index
-                span &nbsp;
-                a(href='/sections/' + section.slug + '/chapters/' + chapter.slug + '/visualizations/' + visualization.slug  , title=visualization.title) #{visualization.title}
+          ul.nav.nav-list
+            - each visualization in visualizations
+                li
+                  a(href='/sections/' + section.slug + '/chapters/' + chapter.slug + '/visualizations/' + visualization.slug  , title=visualization.title) #{visualization.title}
 
-      a.btn.btn-success.btn-small(href='/sections/' + section.slug + '/chapters/' + chapter.slug + '/visualizations/new', title="New visualization") New
-
-  p
-    br
-    form.center.form-inline.confirm(action='/sections/' + section.slug + '/chapters/' + chapter.slug, method="post")
-      input(type='hidden', name='_csrf', value="#{csrf_token}")
-      a.btn(href='/sections/' + section.slug + '/chapters/' + chapter.slug + '/edit', title="edit") Edit
-      &nbsp;&nbsp;
-      input(type="hidden", name="_method", value="DELETE")
-      button.btn.btn-danger(type="submit") Delete
+      ul.pager
+        - if (prevVisualization)
+          li.previous
+            a(href='/sections/' + section.slug + '/chapters/' + prevChapter.slug + '/visualizations/' + prevVisualization.slug  , title=prevVisualization.title) ←
+        - else 
+          li.previous.disabled
+            a(href='#') ←
+        - if (visualizations.length)
+          li.next
+            a(href='/sections/' + section.slug + '/chapters/' + chapter.slug + '/visualizations/' + visualizations[0].slug  , title=visualizations[0].title) →
+        - else 
+          li.next.disabled
+            a(href='#') →

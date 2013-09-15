@@ -1,30 +1,39 @@
 extends ../layouts/default
 
 block main
-  h3= section.title
+  ul.breadcrumb
+    li
+      a(href="/") Home 
+      span.divider /
+    li
+      a(href="/sections/") Sections 
+      span.divider /
+    li.active= section.title
+
+  h3= section.title + ' '
+    span(class='btn-group')
+      small
+        form.center.form-inline.confirm(action="/sections/"+section.slug, method="post", id='ed')
+            input(type='hidden', name='_csrf', value="#{csrf_token}")
+            a.btn.btn-mini(href='/sections/'+section.slug+'/edit', title="edit") Edit
+            input(type="hidden", name="_method", value="DELETE")
+            button.btn.btn-danger.btn-mini(type="submit") Delete
   p.muted= section.description
-  p
-    form.center.form-inline.confirm(action="/sections/"+section.slug, method="post")
-      input(type='hidden', name='_csrf', value="#{csrf_token}")
-      a.btn.btn-small(href='/sections/'+section.slug+'/edit', title="edit") Edit
-      &nbsp;
-      input(type="hidden", name="_method", value="DELETE")
-      button.btn.btn-danger.btn-small(type="submit") Delete
   .clearfix
   hr
 
 block content
 
-  h4 Chapters
+  h4 Chapters 
+    span(class='btn-group')
+      a.btn.btn-success.btn-small(href='/sections/' + section.slug + '/chapters/new', title="New chapter") New
   
   - if (chapters.length)
     .row-fluid
       - each chapter in chapters
-        .span3
+        .span4
           .thumbnail
             .caption
               h3
                 a(href='/sections/' + section.slug + '/chapters/' + chapter.slug  , title=chapter.title) #{chapter.title}
               p= chapter.description
-
-  a.btn.btn-success.btn-small(href='/sections/' + section.slug + '/chapters/new', title="New chapter") New

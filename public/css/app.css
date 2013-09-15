@@ -1,8 +1,33 @@
 body {
-  padding-top: 60px;
+  /*padding-top: 60px;*/
+  background-color: #f2f2f2;
 }
 
+#ed {
+  margin: 0px;
+}
 
+#header {
+  background: #303032;
+  color: #f2f2f2;
+  text-align: center;
+  opacity: .97;
+}
+
+.thumbnail{
+  background-color: white;
+  border-radius: 0px;
+}
+
+hr{
+  border-top: 1px solid #ccc;
+}
+
+#resetZoom{
+  position: absolute;
+  top: 5px;
+  left: 5px;
+}
 .article, .comment {
   padding: 15px 0;
   border-top: 1px solid #e8e8e8;
@@ -64,6 +89,12 @@ body {
 
 .vis-legend,
 .vis-content {
-	overflow: scroll;
 	border: 1px solid #ddd;
+  background: white;
+  margin-bottom: 10px;
+}
+
+.vis-content {
+    overflow: scroll;
+    position: relative;
 }

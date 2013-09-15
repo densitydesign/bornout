@@ -1,16 +1,21 @@
 extends ../layouts/default
 
 block main
-  h3
-    span= title
-    &nbsp;
-    a.btn.btn-small.btn-success(href="/sections/new") New
+  ul.breadcrumb
+    li
+      a(href="/") Home 
+      span.divider /
+    li.active Sections
+  h3= title + ' '
+    span(class='btn-group')
+      a.btn.btn-small.btn-success(href="/sections/new") New
+  hr
 
 block content
   - if (sections.length)
     .row-fluid
       - each section in sections
-        .span3
+        .span6
           .thumbnail
             .caption
               h3

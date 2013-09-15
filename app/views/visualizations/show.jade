@@ -1,8 +1,29 @@
 extends ../layouts/default
 
 block main
-  h3
-    a(href="/sections/" + section.slug + "/chapters/" + chapter.slug) #{chapter.title}
+  ul.breadcrumb
+    li
+      a(href="/") Home 
+      span.divider /
+    li
+      a(href="/sections/") Sections 
+      span.divider /
+    li
+      a(href="/sections/" + section.slug) #{section.title} 
+      span.divider /
+    li
+      a(href="/sections/" + section.slug + "/chapters/" + chapter.slug) #{chapter.title} 
+      span.divider /
+    li.active= visualization.title
+  
+  h3= visualization.title + ' '
+    span(class='btn-group')
+      small
+        form.center.form-inline.confirm(action='/sections/' + section.slug + '/chapters/' + chapter.slug + "/visualizations/"+visualization.slug, method="post", id='ed')
+          input(type='hidden', name='_csrf', value="#{csrf_token}")
+          a.btn.btn-mini(href='/sections/' + section.slug + '/chapters/' + chapter.slug + '/visualizations/'+visualization.slug+'/edit', title="edit") Edit
+          input(type="hidden", name="_method", value="DELETE")
+          button.btn.btn-danger.btn-mini(type="submit") delete
 
 block content
   
@@ -10,44 +31,45 @@ block content
     .span9
       .vis-content
         != visualization.content
+        button.btn.btn-mini(type='button', id="resetZoom")
+          i.icon-fullscreen
     .span3
-      h4= visualization.title
       p= visualization.description
 
       input(id="zoom", type="hidden", value=visualization.zoom.toString())
 
-      - if (prevPage)
-        a(href="/sections/" + section.slug + "/chapters/" + chapter.slug + "/visualizations/" + prevPage.slug) Prev
-      - else
-          a(href="/sections/" + section.slug + "/chapters/" + chapter.slug) Prev
+      ul.pager
+        - if (prevPage)
+          li.previous
+            a(href="/sections/" + section.slug + "/chapters/" + chapter.slug + "/visualizations/" + prevPage.slug) ←
+        - else
+          li.previous
+            a(href="/sections/" + section.slug + "/chapters/" + chapter.slug) ←
 
-      - if (nextPage)
-        a(href="/sections/" + section.slug + "/chapters/" + chapter.slug + "/visualizations/" + nextPage.slug) Next
-      - else
-        - if (nextChapter)
-          a(href="/sections/" + section.slug + "/chapters/" + nextChapter.slug) Next
+        - if (nextPage)
+          li.next
+            a(href="/sections/" + section.slug + "/chapters/" + chapter.slug + "/visualizations/" + nextPage.slug) →
+        - else
+          - if (nextChapter)
+            li.next
+              a(href="/sections/" + section.slug + "/chapters/" + nextChapter.slug) →
+          -else
+            li.next.disabled
+              a(href='#') →
 
       hr
       .vis-legend
         != visualization.legend
-
-  p
-    br
-    form.center.form-inline.confirm(action='/sections/' + section.slug + '/chapters/' + chapter.slug + "/visualizations/"+visualization.slug, method="post")
-      input(type='hidden', name='_csrf', value="#{csrf_token}")
-      a.btn(href='/sections/' + section.slug + '/chapters/' + chapter.slug + '/visualizations/'+visualization.slug+'/edit', title="edit") Edit
-      &nbsp;&nbsp;
-      input(type="hidden", name="_method", value="DELETE")
-      button.btn.btn-danger(type="submit") delete
 
 
   script.
     window.addEventListener('load', function(){
       var zoomable = $('#zoom').val();
       if(zoomable != "true") return;
-
+      var width = $(".vis-content").width();
       d3.select(".vis-content").style("overflow","hidden")
       d3.select("svg")
+      .attr("width", width)
       .call(d3.behavior.zoom().scaleExtent([1,10]).on("zoom", zoom))
 
       function zoom() {
