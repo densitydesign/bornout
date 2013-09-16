@@ -26,7 +26,9 @@ block content
 
   .row-fluid
     .span9
-      .chapter-protocol
+      //.chapter-protocol
+      //  != chapter.protocol
+      .vis-content
         != chapter.protocol
     .span3
       p= chapter.description
@@ -40,7 +42,7 @@ block content
             - each visualization in visualizations
                 li
                   a(href='/sections/' + section.slug + '/chapters/' + chapter.slug + '/visualizations/' + visualization.slug  , title=visualization.title) #{visualization.title}
-
+      hr
       ul.pager
         - if (prevVisualization)
           li.previous
@@ -54,3 +56,29 @@ block content
         - else 
           li.next.disabled
             a(href='#') →
+
+  script.
+    window.addEventListener('load', function(){
+      var zoomBehavior = d3.behavior.zoom();
+      var width = $(".vis-content").width();
+      d3.select(".vis-content").style("overflow","hidden")
+      d3.select("svg")
+      .attr("width", width)
+      .call(zoomBehavior.scaleExtent([1,10]).on("zoom", zoom));
+      var btnRZ = d3.select(".vis-content")
+          .append("button")
+          .attr("class", "btn btn-mini")
+          .attr("type", "button")
+          .attr("id", "resetZoom")
+          .on("click", function(d){
+            zoomBehavior.scale(1);
+            zoomBehavior.translate([0, 0]);
+            d3.select("svg").select("g").transition().duration(500).attr('transform', 'translate(' + zoomBehavior.translate() + ') scale(' + zoomBehavior.scale() + ')');
+          })
+      btnRZ.append("i").attr("class", "icon-fullscreen")
+
+      function zoom() {
+        d3.select("svg").select("g").attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+      }
+
+    })

@@ -57,8 +57,9 @@ block content
               a(href='#') →
 
       hr
-      .vis-legend
-        != visualization.legend
+      - if(visualization.legend)
+        .vis-legend
+          != visualization.legend
 
 
   script.
@@ -71,7 +72,7 @@ block content
       d3.select("svg")
       .attr("width", width)
       .call(zoomBehavior.scaleExtent([1,10]).on("zoom", zoom));
-      d3.select(".vis-content")
+      var btnRZ = d3.select(".vis-content")
           .append("button")
           .attr("class", "btn btn-mini")
           .attr("type", "button")
@@ -81,6 +82,7 @@ block content
             zoomBehavior.translate([0, 0]);
             d3.select("svg").select("g").transition().duration(500).attr('transform', 'translate(' + zoomBehavior.translate() + ') scale(' + zoomBehavior.scale() + ')');
           })
+      btnRZ.append("i").attr("class", "icon-fullscreen")
 
       function zoom() {
         d3.select("svg").select("g").attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");

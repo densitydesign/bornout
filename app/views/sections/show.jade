@@ -28,7 +28,28 @@ block content
     span(class='btn-group')
       a.btn.btn-success.btn-small(href='/sections/' + section.slug + '/chapters/new', title="New chapter") New
   
-  - if (chapters.length)
+  - if (chapters.length > 3)
+    - var chapter_1 = []; chapter_1.push(chapters[0],chapters[1],chapters[2])
+    - var chapter_2 = []; chapter_2.push(chapters[3])
+    .row-fluid
+      - each chapter in chapter_1
+        .span4
+          .thumbnail
+            .caption
+              h3
+                a(href='/sections/' + section.slug + '/chapters/' + chapter.slug  , title=chapter.title) #{chapter.title}
+              p= chapter.description
+    hr
+    .row-fluid
+      - each chapter in chapter_2
+        .span4
+          .thumbnail
+            .caption
+              h3
+                a(href='/sections/' + section.slug + '/chapters/' + chapter.slug  , title=chapter.title) #{chapter.title}
+              p= chapter.description
+    hr
+  - else
     .row-fluid
       - each chapter in chapters
         .span4
